@@ -6,86 +6,21 @@ import Box from "@mui/material/Box"
 import CardMedia from "@mui/material/CardMedia"
 
 import Info from '../../assets/Info.svg'
-import Slide1 from '../../assets/Slide1.svg'
-import Slide2 from '../../assets/Slide2.svg'
-import Slide3 from '../../assets/Slide3.svg'
 import ArrowUp from '../../assets/ArrowUp.svg'
 import ArrowDown from '../../assets/ArrowDown.svg'
+
 import Carousel from "react-material-ui-carousel"
 import { CardContent } from "@mui/material"
 import Chart from "../../components/Chart"
 import TableComponent from "../../shared/Table/Table"
-
-const data = [
-  { eventName: 'Cloud Innovation Summit', date: '2024-10-15', speaker: 'Jane Doe', status: 'Completed' },
-  { eventName: 'Blockchain Revolution Conference', date: '2024-11-05', speaker: 'Dr. Peter Smith', status: 'In Progress' },
-  { eventName: 'AI in Healthcare Symposium', date: '2024-12-01', speaker: 'Dr. Aisha Malik', status: 'In Progress' },
-  { eventName: 'Future of Fintech Forum', date: '2024-10-25', speaker: 'John Lee', status: 'Completed' },
-  { eventName: 'Data Analytics in Business', date: '2024-11-12', speaker: 'Rachel Moore', status: 'Completed' },
-  { eventName: 'Sustainable Energy Expo', date: '2024-09-28', speaker: 'Prof. Alan Green', status: 'Completed' },
-  { eventName: 'Web3 Interfaces Workshop', date: '2024-10-10', speaker: 'Kevin Adams', status: 'In Progress' },
-  { eventName: 'Cybersecurity for Startups', date: '2024-11-19', speaker: 'Emily Zhang', status: 'In Progress' },
-  { eventName: 'Smart Cities Forum', date: '2024-10-18', speaker: 'Dr. Maria Hernandez', status: 'In Progress' },
-  { eventName: 'Tech Safari Mixer', date: '2024-09-30', speaker: 'Guest Panel', status: 'Completed' },
-  { eventName: 'Cloud Innovation Summit', date: '2024-10-15', speaker: 'Jane Doe', status: 'Completed' },
-  { eventName: 'Blockchain Revolution Conference', date: '2024-11-05', speaker: 'Dr. Peter Smith', status: 'In Progress' },
-  { eventName: 'AI in Healthcare Symposium', date: '2024-12-01', speaker: 'Dr. Aisha Malik', status: 'In Progress' },
-  { eventName: 'Future of Fintech Forum', date: '2024-10-25', speaker: 'John Lee', status: 'Completed' },
-  { eventName: 'Data Analytics in Business', date: '2024-11-12', speaker: 'Rachel Moore', status: 'Completed' },
-  { eventName: 'Sustainable Energy Expo', date: '2024-09-28', speaker: 'Prof. Alan Green', status: 'Completed' },
-  { eventName: 'Web3 Interfaces Workshop', date: '2024-10-10', speaker: 'Kevin Adams', status: 'In Progress' },
-  { eventName: 'Cybersecurity for Startups', date: '2024-11-19', speaker: 'Emily Zhang', status: 'In Progress' },
-  { eventName: 'Smart Cities Forum', date: '2024-10-18', speaker: 'Dr. Maria Hernandez', status: 'In Progress' },
-  { eventName: 'Tech Safari Mixer', date: '2024-09-30', speaker: 'Guest Panel', status: 'Completed' },
-];
-
-const DASHSTAT = [
-  {
-    title: 'Total Events',
-    number: '500',
-    percent: '5.0',
-  },
-  {
-    title: 'Active Speakers',
-    number: '25',
-    percent: '5.0',
-  },  {
-    title: 'Total Registration',
-    number: '300',
-    percent: '5.0',
-  },  {
-    title: 'Total Revenue',
-    number: '$500,000',
-    percent: '5.0',
-  },
-]
-
-const IMAGES = [
-  {
-    title: 'Latest News & Updates',
-    description: 'Turpis interdum nunc varius ornare dignissim pretium. Massa ornare quis aliquet sed vitae. Sed velit nisi, fermentum erat. Fringilla purus, erat fringilla tincidunt quisque non. Pellentesque in ut tellus.',
-    pic: Slide1,
-    alt: 'image 1'
-  },
-  {
-    title: 'Latest News & Updates',
-    description: 'Turpis interdum nunc varius ornare dignissim pretium. Massa ornare quis aliquet sed vitae. Sed velit nisi, fermentum erat. Fringilla purus, erat fringilla tincidunt quisque non. Pellentesque in ut tellus.',
-    pic: Slide2,
-    alt: 'image 2'
-  },   {
-    title: 'Latest News & Updates',
-    description: 'Turpis interdum nunc varius ornare dignissim pretium. Massa ornare quis aliquet sed vitae. Sed velit nisi, fermentum erat. Fringilla purus, erat fringilla tincidunt quisque non. Pellentesque in ut tellus.',
-    pic: Slide3,
-    alt: 'image 3'
-  },
-]
+import { Minimize } from "@mui/icons-material"
+import { DASHSTAT, data, IMAGES } from "../../constants/dummy"
 
 function Dashboard() {
   return (
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
-      // gap: '40px',
       justifyContent: 'flex-start',
       alignItems: 'flex-start'
     }}>
@@ -95,10 +30,10 @@ function Dashboard() {
 
       <Grid container spacing={2} sx={{ mt: 2 }}>
         {DASHSTAT.map((text,index) => (
-          <Grid key={index} sm={12} item lg={3}>
+          <Grid key={index} xs={12} md={6} item lg={3}>
             <Card elevation={0}  sx={{
               height: '80px',
-              border: '1px solid black',
+              border: '2px solid #F2F2F7',
               padding: '12px',
               borderRadius: '0px',
             }}>
@@ -148,32 +83,59 @@ function Dashboard() {
           Event Registrations per month
         </Typography>
         <Grid container spacing={2}>
-            <Grid sm={12} item lg={6}>
+            <Grid xs={12} item lg={6}>
               <Card sx={{
+                width: '100%',
                 height: '320px',
-                border: '1px solid #64748B',
-                padding: '32px',
+                border: '2px solid #F2F2F7',
+                padding: { xs: '4px', md: '32px' },
               }}>
                 <Chart />
               </Card>
             </Grid>
-            <Grid sm={12} item lg={6}>
+            <Grid xs={12} item lg={6}>
               <Card  sx={{
                 height: '320px',
                 position: 'relative'
               }}>
                 <Carousel
                   autoPlay
-                  indicators={false}
-                  navButtonsAlwaysInvisible
+                  indicators
+                  navButtonsAlwaysVisible
                   animation="slide"
                   cycleNavigation
+                  indicatorIcon={() => <Minimize />}
+                  indicatorContainerProps={{
+                    style: {
+                      position: 'absolute',
+                      zIndex: 2,
+                      bottom: 3,
+                    },
+                  }}
+                  indicatorIconButtonProps={{
+                    style: {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      padding: '2px',
+                    },
+                  }}
+                  activeIndicatorIconButtonProps={{
+                    style: {
+                      color: '#ffffff',
+                      border: '1px solid #fff'
+                    },
+                  }}
+                  navButtonsProps={{
+                    style: {
+                      backgroundColor: '#fff',
+                      color: 'black',
+                    }
+                  }}
                 >
                   {IMAGES.map((image, index) => (
                     <Box key={index} sx={{
                       height: '100%',
                       width: '100%',
-                      position: 'relative'
+                      // position: 'relative'
                     }}>
                     <CardMedia
                       component="img"
@@ -187,6 +149,7 @@ function Dashboard() {
                         position: "absolute",
                         bottom: 0,
                         color: 'white',
+                        mb: 0,
                       }}
                     >
                       <Box sx={{

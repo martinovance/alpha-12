@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import BarChart from '../shared/Chart/index';
 
 const Chart = () => {
@@ -47,9 +48,9 @@ const Chart = () => {
   };
 
   return (
-    <div style={{ width: '100%' }}>
+    <Box sx={{ maxWidth: '100%' }}>
       <BarChart data={data} options={options} />
-    </div>
+    </Box>
   );
 };
 

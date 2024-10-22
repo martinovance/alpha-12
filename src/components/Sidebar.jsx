@@ -5,7 +5,7 @@ import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 // import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+// import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 // import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -23,6 +23,7 @@ import Bell from '../assets/Bell.svg'
 import Messages from '../assets/Messages.svg'
 import Settings from '../assets/Settings.svg'
 import ChevronRight from '../assets/ChevronRight.svg'
+import CollapseRight from '../assets/CollapseRight.svg'
 // import Avatar from '../assets/Avatar.svg'
 
 const NAVDETAILS = [
@@ -148,16 +149,19 @@ export function Sidebar() {
                 pt: 3,
                 ml: 3,
               }}>
-                <img src={ChevronRight} />
+                <img src={CollapseRight} />
                 <Typography>Collapse</Typography>
             </Box>
             ) : (
-              <ChevronLeftIcon />
+              <Box sx={{ pt: 3, ml: 2.5 }}>
+                <img src={ChevronRight} />
+                {/* // <ChevronRight /> */}
+              </Box>
           )}
         </Box>
         <Box sx={{ 
           pt: 3,
-          ml: 2,
+          ml: 1.5,
           height: '50px', 
           display: 'flex', 
           alignItems: 'center', 
