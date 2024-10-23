@@ -85,8 +85,8 @@ function Dashboard() {
         <Grid container spacing={2}>
             <Grid xs={12} item lg={6}>
               <Card sx={{
-                width: '100%',
-                height: '320px',
+                // width: '100%',
+                height: '350px',
                 border: '2px solid #F2F2F7',
                 padding: { xs: '4px', md: '32px' },
               }}>
@@ -95,7 +95,7 @@ function Dashboard() {
             </Grid>
             <Grid xs={12} item lg={6}>
               <Card  sx={{
-                height: '320px',
+                height: '350px',
                 position: 'relative'
               }}>
                 <Carousel
@@ -137,34 +137,34 @@ function Dashboard() {
                       width: '100%',
                       // position: 'relative'
                     }}>
-                    <CardMedia
-                      component="img"
-                      height="320"
-                      image={image.pic}
-                      // sx={{ objectFit: 'cover'}}
-                      alt={image.alt}
-                    />
-                    <CardContent 
-                      sx={{
-                        position: "absolute",
-                        bottom: 0,
-                        color: 'white',
-                        mb: 0,
-                      }}
-                    >
-                      <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '8px',
-                      }}>
-                        <Typography>
-                          {image.title}
-                        </Typography>
-                        <Typography>
-                          {image.description}
-                        </Typography>
-                      </Box>
-                    </CardContent>
+                      <CardMedia
+                        component="img"
+                        // maxHeight="100%"
+                        image={image.pic}
+                        sx={{ height: '350px'}}
+                        alt={image.alt}
+                      />
+                      <CardContent 
+                        sx={{
+                          position: "absolute",
+                          bottom: 0,
+                          color: 'white',
+                          mb: 0,
+                        }}
+                      >
+                        <Box sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '8px',
+                        }}>
+                          <Typography>
+                            {image.title}
+                          </Typography>
+                          <Typography>
+                            {image.description}
+                          </Typography>
+                        </Box>
+                      </CardContent>
                     </Box>
                   ))}
               </Carousel>

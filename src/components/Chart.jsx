@@ -48,7 +48,7 @@ const Chart = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: '100%' }}>
+    <Box sx={{ width: '100%', height: '100%' }}>
       <BarChart data={data} options={options} />
     </Box>
   );

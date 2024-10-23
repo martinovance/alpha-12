@@ -4,6 +4,7 @@ import Dashboard from './modules/Admin'
 import { Box } from "@mui/material"
 import { Sidebar } from "./components/Sidebar"
 import AppBar from "./components/AppBar";
+import Navbar from "./components/BottomNav";
 
 function App() {
   const isDesktop = window.innerWidth >= 1200
@@ -22,6 +23,9 @@ function App() {
                 <Route index element={<Dashboard />} />
               </Routes>
           </Box>
+          {!isDesktop && (
+            <Navbar />
+          )}
         </Box>
       </BrowserRouter>
     </>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, InputBase, Select, MenuItem, Pagination, FormControl, InputLabel, Box, Stack, Typography, FormLabel, IconButton, Collapse } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, InputBase, Select, MenuItem, Pagination, FormControl, InputLabel, Box, Stack, Typography, FormLabel, IconButton, Collapse, Chip } from '@mui/material';
 import { styled } from '@mui/system';
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
+import EventModal from '../Modal/Modal';
 
 const SearchInput = styled(InputBase)({
   border: '1px solid #CBD5E0',
@@ -16,6 +17,7 @@ const FilterSelect = styled(Select)({
   borderRadius: '5px',
   padding: '8px',
   // width: '20%',
+  height: '30px'
 });
 
 const TableComponent = ({ data }) => {
@@ -26,6 +28,18 @@ const TableComponent = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openRowIndex, setOpenRowIndex] = useState(-1);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(data);
+
+  const handleRowClick = (row) => {
+    setSelectedEvent(row);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedEvent(null);
+  };
 
   const handleToggleRow = (id) => {
     setOpenRowIndex(openRowIndex === id ? -1 : id)
@@ -64,218 +78,237 @@ const TableComponent = ({ data }) => {
   const totalPages = Math.ceil(filteredData?.length / rowsPerPage);
 
   return (
-    <TableContainer elevation={0} component={Paper} sx={{ mt: 5 }}>
-      {/* Search and Filter Section */}
-      <Box sx={{ mb: 3, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', gap: '16px' }}>
-        <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ alignItems: { xs: 'flex-start', md: 'center' } }}>
-          <SearchInput
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ 
-              width: { xs: '100%', md: '200px' }, 
-              height: '50px' 
-            }}
-          />
-          <FormControl sx={{ width: { xs: '100%', md: '100px' } }}>
-            <InputLabel>Date</InputLabel>
-            <FilterSelect
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              label="Status"
+    <>
+      <TableContainer elevation={0} component={Paper} sx={{ mt: 5 }}>
+        {/* Search and Filter Section */}
+        <Box sx={{ mb: 3, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', gap: '16px' }}>
+          <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ alignItems: { xs: 'flex-start', md: 'center' } }}>
+            <SearchInput
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               sx={{ 
-                width: { xs: '100%', md: '100px' }, 
+                width: { xs: '100%', md: '200px' }, 
                 height: '50px' 
               }}
-            >
-              <MenuItem value="">All Status</MenuItem>
-              <MenuItem value="Completed">Completed</MenuItem>
-              <MenuItem value="In Progress">In Progress</MenuItem>
-            </FilterSelect>
-          </FormControl>
-          <FormControl sx={{ width: { xs: '100%', md: '100px' } }}>
-            <InputLabel>Status</InputLabel>
-            <FilterSelect
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              label="Status"
-              sx={{ 
-                width: { xs: '100%', md: '100px' }, 
-                height: '50px' 
-              }}
-            >
-              <MenuItem value="">All Status</MenuItem>
-              <MenuItem value="Completed">Completed</MenuItem>
-              <MenuItem value="In Progress">In Progress</MenuItem>
-            </FilterSelect>
-          </FormControl>
-          <FormControl sx={{ width: { xs: '100%', md: '100px' } }}>
-            <InputLabel>Name</InputLabel>
-            <FilterSelect
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              label="Status"
-              sx={{ 
-                width: { xs: '100%', md: '100px' }, 
-                height: '50px'
-              }}
-            >
-              <MenuItem value="">All Status</MenuItem>
-              <MenuItem value="Completed">Completed</MenuItem>
-              <MenuItem value="In Progress">In Progress</MenuItem>
-            </FilterSelect>
-          </FormControl>
-          <Typography>
-            Displaying {filteredData?.length} results
-          </Typography>
-        </Stack>
-        <Stack spacing={2} direction="row" sx={{ alignItems: 'center' }}>
-          <FormControl>
-            <InputLabel>Sort By</InputLabel>
-            <FilterSelect
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
-              label="Sort By"
-              sx={{ width: '150px', height: '50px' }}
-            >
-              <MenuItem value="Most Recent">Most Recent</MenuItem>
-              <MenuItem value="Oldest First">Oldest First</MenuItem>
-            </FilterSelect>
-          </FormControl>
-          <FormControl>
-            <FilterSelect
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              label="Status"
-              sx={{ width: '40px', height: '50px' }}
-            >
-              <MenuItem value="">All Status</MenuItem>
-              <MenuItem value="Completed">Completed</MenuItem>
-              <MenuItem value="In Progress">In Progress</MenuItem>
-            </FilterSelect>
-          </FormControl>
-          <FormControl>
-            <InputLabel>Export</InputLabel>
-            <FilterSelect
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              label="Status"
-              sx={{ width: '100px', height: '50px' }}
-            >
-              <MenuItem value="">All Status</MenuItem>
-              <MenuItem value="Completed">Completed</MenuItem>
-              <MenuItem value="In Progress">In Progress</MenuItem>
-            </FilterSelect>
-          </FormControl>
-        </Stack>
-      </Box>
-
-      {/* Table */}
-      <Table sx={{
-        '.MuiTableCell-root': {
-          borderBottom: 'none !important'
-        }
-      }}>
-        <TableHead sx={{ backgroundColor: '#F1F5F9' }}>
-          <TableRow>
-            <TableCell sx={{ display: { xs: 'table-cell', md: 'none' }}}>
-              {''}
-            </TableCell>
-            <TableCell>Event Name</TableCell>
-            <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
-              Date
-            </TableCell>
-            <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
-              Speaker
-            </TableCell>
-            <TableCell>Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {currentItems?.map((item, index) => (
-            <React.Fragment key={index}>
-              <TableRow>
-                <TableCell sx={{ display: { xs: 'tale-cell', md: 'none' }}}>
-                  <IconButton
-                    aria-label='expanded row'
-                    size="small"
-                    onClick={() => handleToggleRow(index)}
-                  >
-                    {openRowIndex === index ? (
-                      <KeyboardArrowUp />
-                    ) : (
-                      <KeyboardArrowDown />
-                    )}
-                  </IconButton>
-                </TableCell>
-                <TableCell>{item.eventName}</TableCell>
-                <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
-                  {item.date}
-                </TableCell>
-                <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
-                  {item.speaker}
-                </TableCell>
-                <TableCell>
-                  <span
-                    style={{
-                      padding: '5px 10px',
-                      borderRadius: '20px',
-                      backgroundColor: item.status === 'Completed' ? '#D1FAE5' : '#DBEAFE',
-                      color: item.status === 'Completed' ? '#1OB981' : '#3B82F6',
-                    }}
-                  >
-                    {item.status}
-                  </span>
-                </TableCell>
-              </TableRow>
-              <TableRow sx={{ backgroundColor: 'grey' }}>
-                <TableCell
-                  style={{
-                    paddingBottom: 0,
-                    paddingTop: 0,
-                  }}
-                  colSpan={4}
+            />
+            <FormControl sx={{ width: { xs: '100%', md: '100px' } }}>
+              <InputLabel>Date</InputLabel>
+              <FilterSelect
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                label="Status"
+                sx={{ 
+                  width: { xs: '100%', md: '100px' }, 
+                  height: '50px' 
+                }}
+              >
+                <MenuItem value="">All Status</MenuItem>
+                <MenuItem value="Completed">Completed</MenuItem>
+                <MenuItem value="In Progress">In Progress</MenuItem>
+              </FilterSelect>
+            </FormControl>
+            <FormControl sx={{ width: { xs: '100%', md: '100px' } }}>
+              <InputLabel>Status</InputLabel>
+              <FilterSelect
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                label="Status"
+                sx={{ 
+                  width: { xs: '100%', md: '100px' }, 
+                  height: '50px' 
+                }}
+              >
+                <MenuItem value="">All Status</MenuItem>
+                <MenuItem value="Completed">Completed</MenuItem>
+                <MenuItem value="In Progress">In Progress</MenuItem>
+              </FilterSelect>
+            </FormControl>
+            <FormControl sx={{ width: { xs: '100%', md: '100px' } }}>
+              <InputLabel>Name</InputLabel>
+              <FilterSelect
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                label="Status"
+                sx={{ 
+                  width: { xs: '100%', md: '100px' }, 
+                  height: '50px'
+                }}
+              >
+                <MenuItem value="">All Status</MenuItem>
+                <MenuItem value="Completed">Completed</MenuItem>
+                <MenuItem value="In Progress">In Progress</MenuItem>
+              </FilterSelect>
+            </FormControl>
+            <Typography>
+              Displaying {filteredData?.length} results
+            </Typography>
+          </Stack>
+          <Stack spacing={2} direction={{ xs: "column", md: "row"}} sx={{ alignItems: 'center' }}>
+            <Box sx={{ width: { xs: '100%', md: 'none' }, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+              <Typography>
+                Sort:
+              </Typography>
+              <FormControl>
+                <FilterSelect
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                  label="Sort By"
+                  sx={{ width: '150px', height: '50px' }}
                 >
-                  <Collapse
-                    in={openRowIndex === index}
-                    timeout="auto"
-                    unmountOnExit
-                  >
-                    <Box margin={1}>
-                      <p><strong>Speaker:</strong> {item.speaker}</p>
-                      <p><strong>Date:</strong> {item.date}</p>
-                    </Box>
-                  </Collapse>
-                </TableCell>
-              </TableRow>
-            </React.Fragment>
-          ))}
-        </TableBody>
-      </Table>
+                  <MenuItem value="Most Recent">Most Recent</MenuItem>
+                  <MenuItem value="Oldest First">Oldest First</MenuItem>
+                </FilterSelect>
+              </FormControl>
+            </Box>
+            <Box sx={{ width: { xs: '100%', md: 'none' }, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+              <FormControl>
+                <FilterSelect
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  label="Status"
+                  sx={{ width: '40px', height: '50px' }}
+                >
+                  <MenuItem value="">All Status</MenuItem>
+                  <MenuItem value="Completed">Completed</MenuItem>
+                  <MenuItem value="In Progress">In Progress</MenuItem>
+                </FilterSelect>
+              </FormControl>
+              <FormControl>
+                <InputLabel>Export</InputLabel>
+                <FilterSelect
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  label="Status"
+                  sx={{ width: '100px', height: '50px' }}
+                >
+                  <MenuItem value="">All Status</MenuItem>
+                  <MenuItem value="Completed">Completed</MenuItem>
+                  <MenuItem value="In Progress">In Progress</MenuItem>
+                </FilterSelect>
+              </FormControl>
+            </Box>
+          </Stack>
+        </Box>
 
-      {/* Pagination */}
-      <Box sx={{ pt: 3, display: 'flex', justifyContent: 'space-between' }}>
-        <Pagination
-          component="div"
-          count={totalPages}
-          page={currentPage}
-          rowsPerPage={rowsPerPage}          
-          onRowsPerPageChange={handleChangeRows}
-          labelRowsPerPage="Show:"
-          rowsPerPageOptions={[5, 10, 15]}
-          onChange={(event, value) => setCurrentPage(value)}
-          color="primary"
-        />
-        <FormControl orientation="vertical" size="sm">
-          <FormLabel>Show:</FormLabel>
-          <Select onChange={handleChangeRows} handleChangeRows>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={25}>25</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-    </TableContainer>
+        {/* Table */}
+        <Table sx={{
+          '.MuiTableCell-root': {
+            borderBottom: 'none !important'
+          }
+        }}>
+          <TableHead sx={{ backgroundColor: '#F1F5F9' }}>
+            <TableRow>
+              <TableCell sx={{ width: '2px', display: { xs: 'table-cell', md: 'none' }}}>
+                {''}
+              </TableCell>
+              <TableCell>Event Name</TableCell>
+              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
+                Date
+              </TableCell>
+              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
+                Speaker
+              </TableCell>
+              <TableCell>Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {currentItems?.map((item, index) => (
+              <React.Fragment 
+                key={index} 
+              >
+                <TableRow
+                  hover
+                  onClick={() => handleRowClick(item)}
+                >
+                  <TableCell sx={{ display: { xs: 'tale-cell', md: 'none' }}}>
+                    <IconButton
+                      aria-label='expanded row'
+                      size="small"
+                      onClick={() => handleToggleRow(index)}
+                    >
+                      {openRowIndex === index ? (
+                        <KeyboardArrowDown />
+                      ) : (
+                        <KeyboardArrowRight />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell>{item.eventName}</TableCell>
+                  <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
+                    {item.date}
+                  </TableCell>
+                  <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
+                    {item.speakers?.[0]}
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={item.status}
+                      size="small"
+                      sx={{
+                        padding: '5px 10px',
+                        borderRadius: '20px',
+                        // width: '30%',
+                        backgroundColor: item.status === 'Completed' ? '#D1FAE5' : '#DBEAFE',
+                        color: item.status === 'Completed' ? '#1OB981' : '#3B82F6',
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow sx={{ backgroundColor: '#F5F5F5' }}>
+                  <TableCell
+                    style={{
+                      paddingBottom: 0,
+                      paddingTop: 0,
+                    }}
+                    colSpan={4}
+                  >
+                    <Collapse
+                      in={openRowIndex === index}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <Box margin={1} sx={{ height: '50px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography>{item.speakers?.[0]}</Typography>
+                        <Typography>{item.date}</Typography>
+                      </Box>
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
+              </React.Fragment>
+            ))}
+          </TableBody>
+        </Table>
+
+        {/* Pagination */}
+        <Box sx={{ pt: 3, display: 'flex', justifyContent: 'space-between' }}>
+          <Pagination
+            component="div"
+            count={totalPages}
+            page={currentPage}
+            rowsPerPage={rowsPerPage}          
+            onRowsPerPageChange={handleChangeRows}
+            labelRowsPerPage="Show:"
+            rowsPerPageOptions={[5, 10, 15]}
+            onChange={(event, value) => setCurrentPage(value)}
+            color="primary"
+          />
+          <FormControl orientation="vertical" size="sm">
+            <Box sx={{ display: "flex", alignItems: 'center', gap: '4px', }}>
+            <FormLabel>Show:</FormLabel>
+            <FilterSelect onChange={handleChangeRows} handleChangeRows>
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+              <MenuItem value={25}>25</MenuItem>
+            </FilterSelect>
+            </Box>
+          </FormControl>
+        </Box>
+      </TableContainer>
+      {selectedEvent && (
+        <EventModal open={openModal} onClose={handleCloseModal} eventData={selectedEvent} />
+      )}
+    </>
   );
 };
 export default TableComponent;

@@ -13,53 +13,50 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 // import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { Drawer } from '../shared/Drawer';
-import { Avatar, Typography } from '@mui/material';
-// import { ReactComponent as Home } from '../assets/Home.svg'
-import Home from '../assets/Home.svg'
-import Event from '../assets/Event.svg'
-import Speakers from '../assets/Speakers.svg'
-import Calendar from '../assets/Calendar.svg'
-import Bell from '../assets/Bell.svg'
-import Messages from '../assets/Messages.svg'
-import Settings from '../assets/Settings.svg'
-import ChevronRight from '../assets/ChevronRight.svg'
-import CollapseRight from '../assets/CollapseRight.svg'
-// import Avatar from '../assets/Avatar.svg'
+import { Avatar } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import EventIcon from '@mui/icons-material/Event';
+import SpeakerIcon from '@mui/icons-material/RecordVoiceOver';
+import ReportIcon from '@mui/icons-material/Description';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import MessageIcon from '@mui/icons-material/Message';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight } from '@mui/icons-material';
 
 const NAVDETAILS = [
   {
     title: 'Home',
-    icon: <img src={Home} alt="icon" />,
+    icon: <HomeIcon />,
     link: "/",
   },
   {
     title: 'Events',
-    icon: <img src={Event} alt="icon" />,
+    icon: <EventIcon />,
     link: "/events",
   },
   {
     title: 'Speakers',
-    icon: <img src={Speakers} alt="icon" />,
+    icon: <SpeakerIcon />,
     link: "/speakers",
   },
   {
     title: 'Reports',
-    icon: <img src={Calendar} alt="icon" />,
+    icon: <ReportIcon />,
     link: "/reports",
   },
   {
     title: 'Notifications',
-    icon: <img src={Bell} alt="icon" />,
+    icon: <NotificationsIcon />,
     link: "/notifications",
   },
   {
     title: 'Messages',
-    icon: <img src={Messages} alt="icon" />,
+    icon: <MessageIcon />,
     link: "/messages",
   },
   {
     title: 'Settings',
-    icon: <img src={Settings} alt="icon" />,
+    icon: <SettingsIcon />,
     link: "/settings",
   },
 ]
@@ -140,36 +137,29 @@ export function Sidebar() {
           ))}
         </List>
         <Divider />
-        <Box onClick={toggleBar}>
-            {open ? (
-              <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                pt: 3,
-                ml: 3,
-              }}>
-                <img src={CollapseRight} />
-                <Typography>Collapse</Typography>
-            </Box>
-            ) : (
-              <Box sx={{ pt: 3, ml: 2.5 }}>
-                <img src={ChevronRight} />
-                {/* // <ChevronRight /> */}
-              </Box>
-          )}
-        </Box>
-        <Box sx={{ 
-          pt: 3,
-          ml: 1.5,
-          height: '50px', 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '16px' 
-        }}>
-          <Avatar />
-          <Typography>Martins Ogunsina</Typography>
-        </Box>
+        <ListItem onClick={toggleBar}>
+            <ListItemIcon               
+              sx={{ minWidth: '50px' }}
+            >
+              {open ? (
+                <KeyboardDoubleArrowLeft alt="arrow-left" />
+              ) : (
+                <KeyboardDoubleArrowRight alt="arrow-right" />
+              )}
+            </ListItemIcon>
+            <ListItemText
+              primary="Collapse"
+            />
+          </ListItem>
+        <ListItem>
+            <ListItemIcon>
+              <Avatar />
+            </ListItemIcon>
+            <ListItemText
+              primary="Rudra Devi"
+              secondary="rudra.devi@gmail.com"
+            />
+          </ListItem>
       </Drawer>
     </Box>
   );
