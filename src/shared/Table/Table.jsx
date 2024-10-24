@@ -1,24 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, InputBase, Select, MenuItem, Pagination, FormControl, InputLabel, Box, Stack, Typography, FormLabel, IconButton, Collapse, Chip } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, InputBase, Select, MenuItem, Pagination, FormControl, InputLabel, Box, Stack, Typography, FormLabel, IconButton, Collapse, Chip, InputAdornment, Button, Avatar } from '@mui/material';
 import { styled } from '@mui/system';
-import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
+import { KeyboardArrowDown, KeyboardArrowRight, SearchTwoTone, MoreVertTwoTone, FileDownloadTwoTone, FiberManualRecordTwoTone } from '@mui/icons-material';
 import EventModal from '../Modal/Modal';
+import { ThemeContext } from '../../context/ThemeContext';
+// import SearchIcon from '@mui/icons-material/Search';
 
-const SearchInput = styled(InputBase)({
-  border: '1px solid #CBD5E0',
+// import Download from '../../assets/Download.svg'
+
+const SearchInput = styled(InputBase)(({ theme }) => ({
+  border: `${theme.palette.mode === 'dark' ? '#484554' : '1px solid #CBD5E0'}`,
+  backgroundColor: `${theme.palette.mode === 'dark' ? '#484554' : '#fff'}`,
   borderRadius: '5px',
   padding: '8px',
   width: '30%',
-});
+}));
 
-const FilterSelect = styled(Select)({
-  border: '1px solid #CBD5E0',
+const FilterSelect = styled(Select)(({ theme }) => ({
+  border: `${theme.palette.mode === 'dark' ? '#484554' : '1px solid #CBD5E0'}`,
+  backgroundColor: `${theme.palette.mode === 'dark' ? '#484554' : '#fff'}`,
   borderRadius: '5px',
   padding: '8px',
   // width: '20%',
   height: '30px'
-});
+}));
 
 const TableComponent = ({ data }) => {
   const [filteredData, setFilteredData] = useState(data);
@@ -30,6 +36,7 @@ const TableComponent = ({ data }) => {
   const [openRowIndex, setOpenRowIndex] = useState(-1);
   const [openModal, setOpenModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(data);
+  const { darkMode } = useContext(ThemeContext);
 
   const handleRowClick = (row) => {
     setSelectedEvent(row);
@@ -79,13 +86,20 @@ const TableComponent = ({ data }) => {
 
   return (
     <>
-      <TableContainer elevation={0} component={Paper} sx={{ mt: 5 }}>
+      <TableContainer elevation={0} component={Paper} sx={{ overflowY: 'hidden' }}>
         {/* Search and Filter Section */}
         <Box sx={{ mb: 3, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', gap: '16px' }}>
           <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ alignItems: { xs: 'flex-start', md: 'center' } }}>
             <SearchInput
               placeholder="Search..."
               value={searchTerm}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchTwoTone />
+                  </InputAdornment>
+                ),
+              }}
               onChange={(e) => setSearchTerm(e.target.value)}
               sx={{ 
                 width: { xs: '100%', md: '200px' }, 
@@ -163,29 +177,47 @@ const TableComponent = ({ data }) => {
             </Box>
             <Box sx={{ width: { xs: '100%', md: 'none' }, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
               <FormControl>
-                <FilterSelect
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  label="Status"
-                  sx={{ width: '40px', height: '50px' }}
+                <IconButton 
+                  aria-label="more"
+                  id="filter-button"
+                  // onClick={handleMenuClick}
+                  sx={{ 
+                    borderRadius: '5px',
+                    backgroundColor: darkMode ? '#484554' : '#fff',
+                    border: darkMode ? '#484554' : '1px solid #CBD5E0',
+                    height: '50px',
+                    width: '50px',
+                    '&:hover': {
+                      backgroundColor: darkMode ? '#484554' : '#fff',
+                      border: darkMode ? '#484554' : '1px solid #000',
+                    }
+                  }}
                 >
-                  <MenuItem value="">All Status</MenuItem>
-                  <MenuItem value="Completed">Completed</MenuItem>
-                  <MenuItem value="In Progress">In Progress</MenuItem>
-                </FilterSelect>
+                  <MoreVertTwoTone />
+                </IconButton>
               </FormControl>
               <FormControl>
-                <InputLabel>Export</InputLabel>
-                <FilterSelect
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  label="Status"
-                  sx={{ width: '100px', height: '50px' }}
+                <Button
+                  variant="outlined"
+                  startIcon={<FileDownloadTwoTone sx={{ color: darkMode ? '#fff' : '#000'}} />}
+                  sx={{
+                    borderRadius: '5px',
+                    backgroundColor: darkMode ? '#484554' : '#fff',
+                    border: darkMode ? '#484554' : '1px solid #CBD5E0',
+                    width: '100px',
+                    height: '50px',
+                    '&:hover': {
+                      backgroundColor: darkMode ? '#484554' : '#fff',
+                      border: darkMode ? '#484554' : '1px solid #000',
+                    }
+                  }}
                 >
-                  <MenuItem value="">All Status</MenuItem>
-                  <MenuItem value="Completed">Completed</MenuItem>
-                  <MenuItem value="In Progress">In Progress</MenuItem>
-                </FilterSelect>
+                  <Typography sx={{
+                    color: darkMode ? '#fff' : '#000',
+                  }}>
+                    Export
+                  </Typography>
+                </Button>
               </FormControl>
             </Box>
           </Stack>
@@ -194,22 +226,25 @@ const TableComponent = ({ data }) => {
         {/* Table */}
         <Table sx={{
           '.MuiTableCell-root': {
-            borderBottom: 'none !important'
+            borderBottom: 'none !important',
+          },
+          '.MuiTableCell-body': {
+            backgroundColor: darkMode ? '#484554' : 'primary',
           }
         }}>
-          <TableHead sx={{ backgroundColor: '#F1F5F9' }}>
+          <TableHead sx={{ backgroundColor: darkMode ? '#6A6676' : '#F1F5F9' }}>
             <TableRow>
               <TableCell sx={{ width: '2px', display: { xs: 'table-cell', md: 'none' }}}>
                 {''}
               </TableCell>
-              <TableCell>Event Name</TableCell>
-              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
+              <TableCell sx={{ fontWeight: 'bold' }}>Event Name</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', display: { xs: 'none', md: 'table-cell' }}}>
                 Date
               </TableCell>
-              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' }}}>
+              <TableCell sx={{ fontWeight: 'bold', display: { xs: 'none', md: 'table-cell' }}}>
                 Speaker
               </TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -225,7 +260,10 @@ const TableComponent = ({ data }) => {
                     <IconButton
                       aria-label='expanded row'
                       size="small"
-                      onClick={() => handleToggleRow(index)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleToggleRow(index);
+                      }}
                     >
                       {openRowIndex === index ? (
                         <KeyboardArrowDown />
@@ -243,14 +281,30 @@ const TableComponent = ({ data }) => {
                   </TableCell>
                   <TableCell>
                     <Chip
+                      avatar={
+                        <Avatar variant="filled" sx={{ backgroundColor: 'transparent' }}>
+                          <FiberManualRecordTwoTone 
+                            variant="filled"
+                            sx={{ 
+                              color: item.status === 'Completed' ? '#65DDB5' : '#3B82F6',
+                              fontSize: 12 
+                            }} 
+                          />
+                        </Avatar>
+                      }
                       label={item.status}
                       size="small"
+                      variant={darkMode ? 'outlined' : 'filled'}
                       sx={{
                         padding: '5px 10px',
                         borderRadius: '20px',
+                        border: darkMode ?
+                          item.status === 'Completed' ? '1px solid #65DDB5' : '1px solid #3B82F6' : null,
                         // width: '30%',
-                        backgroundColor: item.status === 'Completed' ? '#D1FAE5' : '#DBEAFE',
-                        color: item.status === 'Completed' ? '#1OB981' : '#3B82F6',
+                        backgroundColor: darkMode ?
+                          item.status === 'Completed' ? 'primary' : 'primary'
+                          : item.status === 'Completed' ? '#D1FAE5' : '#DBEAFE',
+                        color: item.status === 'Completed' ? '#65DDB5' : '#3B82F6',
                       }}
                     />
                   </TableCell>

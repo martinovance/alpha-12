@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeContext } from '../../context/ThemeContext';
+import { useContext } from 'react';
 
 const drawerWidth = 240;
 
@@ -32,6 +33,7 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
     flexShrink: 0,
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',
+    backgroundColor: theme.palette.mode === 'dark' ? '#484554' : '#fff',
     variants: [
       {
         props: ({ open }) => open,
@@ -52,14 +54,14 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
 );
 
 export const Drawer = ({ open, children, ...props }) => {
-  const theme = createTheme();
+  const { darkMode } = useContext(ThemeContext);
 
   return (
-    <ThemeProvider theme={theme}>
-      <StyledDrawer variant="permanent" open={open} {...props}>
+      <StyledDrawer variant="permanent" open={open} {...props} sx={{
+        backgroundColor: darkMode ? '#484554' : '#fff',
+      }}>
         {children}
       </StyledDrawer>
-    </ThemeProvider>
   );
 };
 

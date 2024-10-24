@@ -12,10 +12,15 @@ import {
   Avatar,
   Divider,
   Stack,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { ThemeContext } from '../../context/ThemeContext';
+import { useContext } from 'react';
 
 const EventModal = ({ open, onClose, eventData }) => {
   const { eventName, date, description, speakers, attendees } = eventData;
+  const { darkMode } = useContext(ThemeContext);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -24,6 +29,18 @@ const EventModal = ({ open, onClose, eventData }) => {
         <Typography variant="subtitle1" color="textSecondary">
           {date}
         </Typography>
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: darkMode ? '#fff' : '#000',
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
       </DialogTitle>
       <DialogContent>
         <Typography variant="body1" gutterBottom>
@@ -44,16 +61,25 @@ const EventModal = ({ open, onClose, eventData }) => {
         </Typography>
       </DialogContent>
       <Divider />
-      <DialogActions>
-        <Box sx={{ margin: 2, width: '100%', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', gap: '8px' }}>
-          <Button variant="outlined" onClick={() => alert('Edit action')}>
-            Edit
+      <DialogActions sx={{ 
+        backgroundColor: darkMode ? '#ADA9BB' : '#F8FAFC', 
+      }}>
+        <Box sx={{ 
+          margin: 2, 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: { xs: 'column', md: 'row' }, 
+          justifyContent: 'space-between', 
+          gap: '8px',
+        }}>
+          <Button sx={{ color: '#000', backgroundColor: '#fff' }} onClick={onClose}>
+            Close
           </Button>
           <Stack direction={{ xs: 'column', md: 'row'}} spacing={2}>
-            <Button variant="contained" color="error" onClick={() => alert('Delete action')}>
+            <Button variant="contained" color="error" onClick={onClose}>
               Delete
             </Button>
-            <Button variant="contained" color="primary" onClick={() => alert('Mark as completed')}>
+            <Button variant="contained" color="primary" onClick={onClose}>
               Mark as completed
             </Button>
         </Stack>

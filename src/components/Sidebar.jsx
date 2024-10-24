@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,7 +13,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 // import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { Drawer } from '../shared/Drawer';
-import { Avatar } from '@mui/material';
+import { Avatar, Badge, Switch, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import EventIcon from '@mui/icons-material/Event';
 import SpeakerIcon from '@mui/icons-material/RecordVoiceOver';
@@ -22,6 +22,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MessageIcon from '@mui/icons-material/Message';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight } from '@mui/icons-material';
+import { ThemeContext } from '../context/ThemeContext';
+
+// import { ThemeContext } from '../ThemeContext';
 
 const NAVDETAILS = [
   {
@@ -48,6 +51,7 @@ const NAVDETAILS = [
     title: 'Notifications',
     icon: <NotificationsIcon />,
     link: "/notifications",
+    badge: 3,
   },
   {
     title: 'Messages',
@@ -63,6 +67,8 @@ const NAVDETAILS = [
 
 export function Sidebar() {
   const [open, setOpen] = React.useState(true);
+  console.log(NAVDETAILS);
+  const { darkMode, toggleDarkMode } = React.useContext(ThemeContext);
 
   const toggleBar = () => {
     setOpen(!open)
@@ -71,28 +77,42 @@ export function Sidebar() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Drawer variant="permanent" open={open}>
-        <Box sx={{ p: 1, height: '50px', display: 'flex', alignItems: 'center' }}>
+      <Drawer variant="permanent" open={open} sx={{
+        backgroundColor: darkMode ? 'grey.900' : 'grey.100',
+      }}>
+        <Box sx={{ p: 1, height: '50px', display: 'flex', alignItems: 'center', gap: '16px' }}>
           <Avatar />
+          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', flexGrow: 1 }}>
+            Logo
+          </Typography>
         </Box>
         <Divider />
         <List>
           {NAVDETAILS.map((text, index) => (
             <ListItem key={index} 
-              component={Link} 
-              to={text.link} 
               disablePadding 
               sx={{ 
                 display: 'block', 
                 textDecoration: 'none',
                 color: 'inherit',
+                px: 0.5,
               }}
             >
                 <ListItemButton
+                  component={NavLink} 
+                  to={text.link} 
+                  exact
                   sx={[
                     {
                       minHeight: 48,
-                      px: 2.5,
+                      px: 1.5,
+                      textDecoration: 'none',
+                      '&.active': {
+                        backgroundColor: darkMode ? '#8576FF' : '#FCF7FF',
+                        '&:hover': {
+                          color: darkMode ? '#000' : 'default',
+                        },
+                      },
                     },
                     open
                       ? {
@@ -118,7 +138,13 @@ export function Sidebar() {
                           },
                     ]}
                   >
-                    {text.icon}
+                    {text.badge ? (
+                      <Badge badgeContent={!open ? text.badge : null} color="error">
+                        {text.icon}
+                      </Badge>
+                    ) : (
+                        text.icon
+                    )}
                   </ListItemIcon>
                   <ListItemText 
                     primary={text.title} 
@@ -132,6 +158,13 @@ export function Sidebar() {
                           },
                     ]}
                   />
+                  {open ? (
+                    <Badge 
+                      badgeContent={text.badge} 
+                      color="error"
+                      sx={{ mr: 1 }}
+                    />
+                  ) : null}
                 </ListItemButton>
             </ListItem>
           ))}
@@ -150,6 +183,14 @@ export function Sidebar() {
             <ListItemText
               primary="Collapse"
             />
+        </ListItem>
+        <ListItem>
+            <Switch
+              edge="start"
+              checked={darkMode}
+              onChange={toggleDarkMode}
+            />
+            <ListItemText primary="Dark mode" />
           </ListItem>
         <ListItem>
             <ListItemIcon>

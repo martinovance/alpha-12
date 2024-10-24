@@ -6,6 +6,7 @@ import Box from "@mui/material/Box"
 import CardMedia from "@mui/material/CardMedia"
 
 import Info from '../../assets/Info.svg'
+import DarkInfo from '../../assets/DarkInfo.svg'
 import ArrowUp from '../../assets/ArrowUp.svg'
 import ArrowDown from '../../assets/ArrowDown.svg'
 
@@ -15,8 +16,12 @@ import Chart from "../../components/Chart"
 import TableComponent from "../../shared/Table/Table"
 import { Minimize } from "@mui/icons-material"
 import { DASHSTAT, data, IMAGES } from "../../constants/dummy"
+import { useContext } from "react"
+import { ThemeContext } from "../../context/ThemeContext"
 
 function Dashboard() {
+  const { darkMode } = useContext(ThemeContext);
+
   return (
     <Box sx={{
       display: 'flex',
@@ -24,7 +29,13 @@ function Dashboard() {
       justifyContent: 'flex-start',
       alignItems: 'flex-start'
     }}>
-      <Typography variant="h5">
+      <Typography 
+        sx={{ 
+          fontSize: { xs: '18px', sm: '22px' }, 
+          fontWeight: { xs: 'bold', sm: '400' }, 
+          lineHeight: '20px', 
+        }}
+      >
         Welcome! here is your summary
       </Typography>
 
@@ -32,25 +43,34 @@ function Dashboard() {
         {DASHSTAT.map((text,index) => (
           <Grid key={index} xs={12} md={6} item lg={3}>
             <Card elevation={0}  sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
               height: '80px',
-              border: '2px solid #F2F2F7',
+              border: darkMode ? '#484554' : '2px solid #F2F2F7',
               padding: '12px',
               borderRadius: '0px',
+              backgroundColor: darkMode ? '#484554' : '#fff',
             }}>
               <Box sx={{
                 display: 'flex',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
-                gap: '12px,'
+                gap: '16px,'
               }}>
                 <Typography sx={{
-                  color: '#64748B',
+                  color: darkMode ? '#fff' : '#64748B',
                   fontSize: '16px',
                   fontWeight: '600',
                 }}>
                   {text.title}
                 </Typography>
-                <img src={Info} alt="icon" />
+                {darkMode ? (
+                  <img src={DarkInfo} alt="icon" />
+                ) : (
+                  <img src={Info} alt="icon" />
+                )}
               </Box>
               <Box sx={{
                 display: 'flex',
@@ -79,7 +99,7 @@ function Dashboard() {
         )) }
       </Grid>
 
-        <Typography sx={{ fontSize: '18px', fontWeight: '500', mt: 5 }}>
+        <Typography sx={{ fontSize: '18px', fontWeight: '500', mt: 4 }}>
           Event Registrations per month
         </Typography>
         <Grid container spacing={2}>
@@ -87,8 +107,9 @@ function Dashboard() {
               <Card sx={{
                 // width: '100%',
                 height: '350px',
-                border: '2px solid #F2F2F7',
                 padding: { xs: '4px', md: '32px' },
+                border: darkMode ? '#484554' : '2px solid #F2F2F7',
+                backgroundColor: darkMode ? '#484554' : '#fff',
               }}>
                 <Chart />
               </Card>
@@ -172,6 +193,9 @@ function Dashboard() {
             </Grid>
         </Grid>
 
+        <Typography sx={{ fontSize: '18px', fontWeight: '500', mt: 4 }}>
+          Events History
+        </Typography>
         <TableComponent data={data} />
     </Box>
   )
