@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom'
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -65,17 +66,13 @@ const NAVDETAILS = [
   },
 ]
 
-export function Sidebar() {
-  const [open, setOpen] = React.useState(true);
-  console.log(NAVDETAILS);
+export function Sidebar({ toggleBar, open }) {
   const { darkMode, toggleDarkMode } = React.useContext(ThemeContext);
 
-  const toggleBar = () => {
-    setOpen(!open)
-  }
-
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ 
+      display: 'flex',
+    }}>
       <CssBaseline />
       <Drawer variant="permanent" open={open} sx={{
         backgroundColor: darkMode ? 'grey.900' : 'grey.100',
@@ -172,7 +169,10 @@ export function Sidebar() {
         <Divider />
         <ListItem onClick={toggleBar}>
             <ListItemIcon               
-              sx={{ minWidth: '50px' }}
+              sx={{ 
+                minWidth: '45px',
+                ml: !open ? '-5px' : null,
+              }}
             >
               {open ? (
                 <KeyboardDoubleArrowLeft alt="arrow-left" />
@@ -182,6 +182,9 @@ export function Sidebar() {
             </ListItemIcon>
             <ListItemText
               primary="Collapse"
+              sx={{ 
+                opacity: open ? 1 : 0 
+              }}
             />
         </ListItem>
         <ListItem>
@@ -189,19 +192,26 @@ export function Sidebar() {
               edge="start"
               checked={darkMode}
               onChange={toggleDarkMode}
+              sx={{ ml: !open ? '-21px' : null }}
             />
-            <ListItemText primary="Dark mode" />
+            <ListItemText primary="Dark mode" sx={{ opacity: open ? 1 : 0 }} />
           </ListItem>
         <ListItem>
-            <ListItemIcon>
+            <ListItemIcon sx={{ ml: !open ? '-12px' : null }}>
               <Avatar />
             </ListItemIcon>
             <ListItemText
               primary="Rudra Devi"
               secondary="rudra.devi@gmail.com"
+              sx={{ opacity: open ? 1 : 0 }}
             />
           </ListItem>
       </Drawer>
     </Box>
   );
+}
+
+Sidebar.propTypes = {
+  toggleBar: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
 }

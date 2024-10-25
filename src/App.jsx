@@ -9,7 +9,12 @@ import Navbar from "./components/BottomNav";
 import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
+  const [open, setOpen] = useState(true);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1200)
+
+  const toggleBar = () => {
+    setOpen(!open)
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -26,13 +31,22 @@ function App() {
     <>
       <ThemeProvider>
         <BrowserRouter>
-          <Box sx={{ display: 'flex', flexDirection: isDesktop ? 'row' : 'column' }}>
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: isDesktop ? 'row' : 'column',
+            overflowX: 'hidden',
+            width: '100vw',
+          }}>
             {isDesktop ? (
-              <Sidebar />
+                <Sidebar toggleBar={toggleBar} open={open} />
             ) : (
               <AppBar />
             )}
-            <Box sx={{ flex: 1, p:  { xs: 1, lg: 4 } }}>
+            <Box sx={{ 
+              flex: 1, 
+              p:  { xs: 1, lg: 4 },
+              maxWidth: isDesktop && open ? 'calc(100vw - 240px)' : '100%',
+            }}>
                 <Routes>
                   <Route index element={<Dashboard />} />
                 </Routes>

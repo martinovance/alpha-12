@@ -27,7 +27,7 @@ function Dashboard() {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      alignItems: 'flex-start'
+      alignItems: 'flex-start',
     }}>
       <Typography 
         sx={{ 
