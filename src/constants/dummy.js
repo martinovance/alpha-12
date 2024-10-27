@@ -1,4 +1,3 @@
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import Slide1 from '../assets/Slide1.svg'
 import Slide2 from '../assets/Slide2.svg'
 import Slide3 from '../assets/Slide3.svg'
@@ -20,43 +19,6 @@ export const IMAGES = [
     description: 'Turpis interdum nunc varius ornare dignissim pretium. Massa ornare quis aliquet sed vitae. Sed velit nisi, fermentum erat.',
     pic: Slide3,
     alt: 'image 3'
-  },
-]
-
-export const NAVDETAILS = [
-  {
-    title: 'Events',
-    icon: InboxIcon,
-    link: "/",
-  },
-  {
-    title: 'Speakers',
-    icon: InboxIcon,
-    link: "/speakers",
-  },
-  {
-    title: 'Reports',
-    icon: InboxIcon,
-    link: "/reports",
-  },
-  {
-    title: 'Notifications',
-    icon: InboxIcon,
-    link: "/notifications",
-  },
-  {
-    title: 'Messages',
-    icon: InboxIcon,
-    link: "/messages",
-  },
-  {
-    title: 'Settings',
-    icon: InboxIcon,
-    link: "/settings",
-  },
-  {
-    title: 'Collapse',
-    icon: InboxIcon,
   },
 ]
 

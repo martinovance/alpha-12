@@ -4,15 +4,10 @@ import { NavLink } from 'react-router-dom'
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-// import IconButton from '@mui/material/IconButton';
-// import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-// import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { Drawer } from '../shared/Drawer';
 import { Avatar, Badge, Switch, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
@@ -24,8 +19,6 @@ import MessageIcon from '@mui/icons-material/Message';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight } from '@mui/icons-material';
 import { ThemeContext } from '../context/ThemeContext';
-
-// import { ThemeContext } from '../ThemeContext';
 
 const NAVDETAILS = [
   {
@@ -83,7 +76,7 @@ export function Sidebar({ toggleBar, open }) {
             Logo
           </Typography>
         </Box>
-        <Divider />
+        {/* <Divider /> */}
         <List>
           {NAVDETAILS.map((text, index) => (
             <ListItem key={index} 
@@ -166,8 +159,15 @@ export function Sidebar({ toggleBar, open }) {
             </ListItem>
           ))}
         </List>
-        <Divider />
-        <ListItem onClick={toggleBar}>
+        {/* <Divider /> */}
+        <ListItem 
+          onClick={toggleBar}
+          sx={{
+            '&:hover': {
+              cursor: 'pointer',
+            },
+          }}
+        >
             <ListItemIcon               
               sx={{ 
                 minWidth: '45px',
@@ -196,7 +196,12 @@ export function Sidebar({ toggleBar, open }) {
             />
             <ListItemText primary="Dark mode" sx={{ opacity: open ? 1 : 0 }} />
           </ListItem>
-        <ListItem>
+        <ListItem 
+          sx={{
+            '&:hover': {
+              cursor: 'pointer',
+            },
+        }}>
             <ListItemIcon sx={{ ml: !open ? '-12px' : null }}>
               <Avatar />
             </ListItemIcon>
