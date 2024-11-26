@@ -1,13 +1,9 @@
-// import React from 'react'
-
 const Notification = () => {
   return (
     <div>
-      <h1>
-        Notifications
-      </h1>
+      <h1>Notifications</h1>
     </div>
-  )
-}
+  );
+};
 
-export default Notification
+export default Notification;
