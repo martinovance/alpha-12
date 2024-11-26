@@ -13,6 +13,8 @@ const Chart = () => {
 
     if (screenWidth < 600) {
       return 18;
+    } else if (screenWidth >= 1200 && screenWidth < 1400) {
+      return 25;
     } else {
       return 30; // Thicker bars for large screens
     }

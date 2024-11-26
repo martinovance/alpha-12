@@ -119,7 +119,7 @@ function Dashboard() {
           <Card
             sx={{
               // width: '100%',
-              height: "350px",
+              height: { xs: "350px", md: "600px", lg: "350px", xl: "500px" },
               padding: { xs: "4px", md: "32px" },
               border: darkMode ? "#484554" : "2px solid #F2F2F7",
               backgroundColor: darkMode ? "#484554" : "#fff",
@@ -131,7 +131,7 @@ function Dashboard() {
         <Grid xs={12} item lg={6}>
           <Card
             sx={{
-              height: "350px",
+              height: { xs: "350px", md: "600px", lg: "350px", xl: "500px" },
               position: "relative",
             }}
           >
@@ -181,7 +181,14 @@ function Dashboard() {
                     component="img"
                     // maxHeight="100%"
                     image={image.pic}
-                    sx={{ height: "350px" }}
+                    sx={{
+                      height: {
+                        xs: "350px",
+                        md: "600px",
+                        lg: "350px",
+                        xl: "500px",
+                      },
+                    }}
                     alt={image.alt}
                   />
                   <CardContent
